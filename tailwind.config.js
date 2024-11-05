@@ -12,6 +12,7 @@ export default {
         primaryDark: "#0052CC",
         primaryLight: "#CCE0FF",
         gray: "#97A1AF",
+        secondGray: "#344051",
       },
     },
   },
