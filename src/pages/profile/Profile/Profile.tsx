@@ -1,5 +1,5 @@
+import { useFetchUserData } from "@shared/hooks/useFetchUserData.tsx";
 import { Typography } from "@shared/ui/Typography/Typography";
-import { useFetchUserData } from "@shared/useAuth/useFetchUserData.tsx";
 
 export const Profile = () => {
   const { loading, error, userData } = useFetchUserData();

@@ -3,6 +3,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 
 import { ResendCodeText } from "@pages/auth/SignIn/ResendCodeText.tsx";
 
+import { useAuth } from "@shared/hooks/useAuth.tsx";
 import {
   SignInSchemaType,
   signInSchemaWithOtp,
@@ -11,7 +12,6 @@ import {
 import { Button } from "@shared/ui/Button/Button.tsx";
 import { Input } from "@shared/ui/Input/Input.tsx";
 import { Typography } from "@shared/ui/Typography/Typography.tsx";
-import { useAuth } from "@shared/useAuth/useAuth.tsx";
 
 export const SignIn = () => {
   const authLogic = useAuth();
