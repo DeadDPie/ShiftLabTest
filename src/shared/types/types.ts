@@ -14,5 +14,21 @@ export const signInSchemaWithOtp = z.object({
 
 export type SignInSchemaType = {
   phone: string;
-  code?: string;
+  code?: string | undefined;
+};
+
+export interface UserData {
+  name: string;
+  email: string;
+}
+
+export interface FetchUserResponse {
+  success: boolean;
+  data?: UserData;
+  message?: string;
+}
+
+export type VerifyOtpResponse = {
+  success: true;
+  token: string;
 };

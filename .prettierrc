@@ -4,6 +4,7 @@
   "importOrder": [
     "^@pages/(.*)$",
     "^@shared/(.*)$",
+    "^@mock/(.*)$",
     "^[./]"
   ],
   "importOrderSeparation": true,

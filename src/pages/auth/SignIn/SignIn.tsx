@@ -1,11 +1,14 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 import { ResendCodeText } from "@pages/auth/SignIn/ResendCodeText.tsx";
 
+import { useAuthStore } from "@shared/store/useAuthStore";
 import {
   SignInSchemaType,
+  VerifyOtpResponse,
   signInSchemaWithOtp,
   signInSchemaWithoutOtp,
 } from "@shared/types/types.ts";
@@ -13,7 +16,11 @@ import { Button } from "@shared/ui/Button/Button.tsx";
 import { Input } from "@shared/ui/Input/Input.tsx";
 import { Typography } from "@shared/ui/Typography/Typography.tsx";
 
+import { requestOtp, verifyOtp } from "@mock/api.ts";
+
 export const SignIn = () => {
+  const { setToken } = useAuthStore();
+  const navigate = useNavigate();
   const [otp, setOtp] = useState<boolean>(false);
   const {
     register,
@@ -24,14 +31,29 @@ export const SignIn = () => {
     resolver: zodResolver(otp ? signInSchemaWithOtp : signInSchemaWithoutOtp),
   });
 
-  const onSubmit: SubmitHandler<SignInSchemaType> = (data) => {
-    console.log(data, otp);
+  const onSubmit: SubmitHandler<SignInSchemaType> = async (data) => {
     if (!otp) {
-      setOtp(true);
+      try {
+        await requestOtp(data.phone);
+        setOtp(true);
+      } catch (error) {
+        console.error("OTP request failed:", error);
+      }
     } else {
-      console.log("Вы вошли в аккаунт");
+      try {
+        const response: VerifyOtpResponse = await verifyOtp(
+          data.phone,
+          data.code,
+        );
+        console.log("OTP verification successful", response);
+        setToken(response.token);
+        navigate("/profile");
+      } catch (error) {
+        console.error("OTP verification failed:", error);
+      }
     }
   };
+
   return (
     <div className="flex flex-col items-start mt-24 ml-60 gap-6">
       <Typography variant="t">Вход</Typography>

@@ -41,7 +41,7 @@ export const ResendCodeText = () => {
       </Button>
       {isButtonDisabled && (
         <Typography variant="p14" className={"text-gray"}>
-          Запросить код повторно можно через {isButtonDisabled ? seconds : 0}{" "}
+          Запросить код повторно можно через {isButtonDisabled ? seconds : 0}
           секунд
         </Typography>
       )}
