@@ -1,44 +1,8 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-
-import { useAuthStore } from "@shared/store/useAuthStore";
-import { FetchUserResponse } from "@shared/types/types.ts";
 import { Typography } from "@shared/ui/Typography/Typography";
-
-import { fetchProtectedUserData } from "@mock/api";
+import { useFetchUserData } from "@shared/useAuth/useFetchUserData.tsx";
 
 export const Profile = () => {
-  const navigate = useNavigate();
-  const { setUserData, token } = useAuthStore(); // Используем token из Zustand
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      if (!token) {
-        navigate("/");
-        return;
-      }
-      try {
-        const response: FetchUserResponse = await fetchProtectedUserData(token);
-        if (response.success && response.data) {
-          setUserData(response.data);
-        } else {
-          setError("Не удалось получить данные пользователя");
-        }
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          console.error(error.message);
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUserData();
-  }, [token, setUserData, navigate]);
-
-  const { userData } = useAuthStore();
+  const { loading, error, userData } = useFetchUserData();
 
   if (loading) {
     return (
